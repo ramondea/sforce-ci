@@ -31,7 +31,7 @@ node {
 
     stage('RUN PMD'){
         sh "mkdir -p target"
-        rc = sh returnStatus: true, script: "${pmd} -d /force-app/main/default/classes/ -f xml -language apex -R rulesets/apex/quickstart.xml -cache pmdcache -failOnViolation false -r /target/pmd.xml"
+        rc = sh returnStatus: true, script: "${pmd} pmd -d /force-app/main/default/classes/ -f xml -language apex -R rulesets/apex/quickstart.xml -cache pmdcache -failOnViolation false -r /target/pmd.xml"
     }
 
     stage('GET RESULT'){

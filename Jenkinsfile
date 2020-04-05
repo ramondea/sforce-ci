@@ -29,11 +29,11 @@ node {
     }
 
     stage('GET RESULT'){
-        def pmd = scanForIssues tool: pmdParser(pattern: '**/target/pmd.xml')
-            publishIssues issues: [pmd]
+        def pmdResult = scanForIssues tool: pmdParser(pattern: '**/target/pmd.xml')
+            publishIssues issues: [pmdResult]
 
         publishIssues id: 'analysis', name: 'All Issues', 
-                issues: [pmd], 
+                issues: [pmdResult], 
                 filters: [includePackage('io.jenkins.plugins.analysis.*')]
     }
 

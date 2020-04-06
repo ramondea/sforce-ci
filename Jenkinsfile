@@ -35,18 +35,18 @@ node {
     }
 
     stage('RUN CPD'){
-        rc = sh returnStatus: true, script: "${pmd} cpd -d /force-app/main/default/classes/ -f xml -language apex --minimum-tokens 100 -r /target/cpd.xml"
+        rc = sh returnStatus: true, script: "${pmd} cpd -d /force-app/main/default/classes/ -f xml -language apex --minimum-tokens 100 -r /target/pmd.xml"
     }
 
     stage('GET RESULT'){
         def pmdResult = scanForIssues tool: pmdParser(pattern: '**/target/pmd.xml')
             publishIssues issues: [pmdResult]
 
-        def cpdResult = scanForIssues tool: cpd(pattern: '**/target/cpd.xml')
+        def cpd = scanForIssues tool: cpd(pattern: '**/target/cpd.xml')
             publishIssues issues: [cpd]
 
         publishIssues id: 'analysis', name: 'All Issues', 
-                issues: [pmdResult, cpdResult], 
+                issues: [pmdResult, cpd], 
                 filters: [includePackage('io.jenkins.plugins.analysis.*')]
     }
 

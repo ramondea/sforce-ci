@@ -35,7 +35,7 @@ node {
     }
 
     stage('RUN CPD'){
-        rc = sh returnStatus: true, script: "${pmd} cpd --files ./force-app/main/default/classes/ --format xml --language apex --minimum-tokens 100 > ./target/pmd.xml"
+        rc = sh returnStatus: true, script: "${pmd} cpd --files ./force-app/main/default/classes/ --format xml --language apex --minimum-tokens 100 > ./target/cpd.xml"
     }
 
     stage('GET RESULT'){

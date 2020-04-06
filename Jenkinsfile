@@ -34,13 +34,24 @@ node {
         rc = sh returnStatus: true, script: "${pmd} pmd -d /force-app/main/default/classes/ -f xml -language apex -R rulesets/apex/quickstart.xml -cache pmdcache -failOnViolation false -r /target/pmd.xml"
     }
 
+    stage('RUN CPD'){
+        rc = sh returnStatus: true, script: "${pmd} cpd -d /force-app/main/default/classes/ -f xml -language apex --minimum-tokens 100 -r /target/cpd.xml"
+    }
+
     stage('GET RESULT'){
         def pmdResult = scanForIssues tool: pmdParser(pattern: '**/target/pmd.xml')
             publishIssues issues: [pmdResult]
 
+        def cpdResult = scanForIssues tool: cpd(pattern: '**/target/cpd.xml')
+            publishIssues issues: [cpd]
+
         publishIssues id: 'analysis', name: 'All Issues', 
-                issues: [pmdResult], 
+                issues: [pmdResult, cpdResult], 
                 filters: [includePackage('io.jenkins.plugins.analysis.*')]
+    }
+
+    stage('RUN '){
+
     }
 
 }

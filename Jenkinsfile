@@ -24,18 +24,18 @@ node {
     }
 
     stage('CHECKOUT SOURCE') {
-            echo '------------------ INICIANDO O CHECKOUT SOURCE '
-            checkout scm
-            echo '------------------ FINALIZANDO O CHECKOUT SOURCE '
+        echo '------------------ INICIANDO O CHECKOUT SOURCE '
+        checkout scm
+        echo '------------------ FINALIZANDO O CHECKOUT SOURCE '
     }
 
     stage('RUN PMD'){
         sh "mkdir -p target"
-        rc = sh returnStatus: true, script: "${pmd} pmd -d /force-app/main/default/classes/ -f xml -language apex -R rulesets/apex/quickstart.xml -cache pmdcache -failOnViolation false -r /target/pmd.xml"
+        rc = sh returnStatus: true, script: "${pmd} pmd -d ./force-app/main/default/classes/ -f xml -language apex -R rulesets/apex/quickstart.xml -cache pmdcache -failOnViolation false -r ./target/pmd.xml"
     }
 
     stage('RUN CPD'){
-        rc = sh returnStatus: true, script: "${pmd} cpd --files /force-app/main/default/classes/ --format xml --language apex --minimum-tokens 100 > /target/pmd.xml"
+        rc = sh returnStatus: true, script: "${pmd} cpd --files ./force-app/main/default/classes/ --format xml --language apex --minimum-tokens 100 > ./target/pmd.xml"
     }
 
     stage('GET RESULT'){
